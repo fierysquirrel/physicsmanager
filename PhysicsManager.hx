@@ -68,7 +68,7 @@ class PhysicsManager
 		var dir : Normal.NormalDirection;
 		
 		//cTransformed = TransformCoordinates(futureCircle, rectangle);
-		cTransformed = Helper.TransformCoordinates(currentCircle, rectangle);
+		cTransformed = TransformCoordinates(currentCircle, rectangle);
 		value = new Point();
 		dir = Normal.NormalDirection.Down;
 		cx = cTransformed.x;
@@ -79,7 +79,7 @@ class PhysicsManager
 		rw = rectangle.GetNonRotatedWidth();
 		rh = rectangle.GetNonRotatedHeight();
 		
-		transformedCurrentCircle = Helper.TransformCoordinates(currentCircle, rectangle);
+		transformedCurrentCircle = TransformCoordinates(currentCircle, rectangle);
 		ccx = transformedCurrentCircle.x;
 		ccy = transformedCurrentCircle.y;		
 		ccr = currentCircle.GetRadius();
@@ -173,8 +173,8 @@ class PhysicsManager
 		rectW = rectangle.GetNonRotatedWidth();
 		rectH = rectangle.GetNonRotatedHeight();
 		
-		futuCircPos = Helper.TransformCoordinates(futureCircle, rectangle);
-		currCircPos = Helper.TransformCoordinates(currentCircle, rectangle);
+		futuCircPos = TransformCoordinates(futureCircle, rectangle);
+		currCircPos = TransformCoordinates(currentCircle, rectangle);
 		
 		//Position difference between circle and rectangle
 		currCircDiffRect = new Point(currCircPos.x - rectPos.x, currCircPos.y - rectPos.y);
@@ -255,8 +255,8 @@ class PhysicsManager
 		rectW = rectangle.GetNonRotatedWidth();
 		rectH = rectangle.GetNonRotatedHeight();
 		
-		futuCircPos = Helper.TransformCoordinates(futureCircle, rectangle);
-		currCircPos = Helper.TransformCoordinates(currentCircle, rectangle);
+		futuCircPos = TransformCoordinates(futureCircle, rectangle);
+		currCircPos = TransformCoordinates(currentCircle, rectangle);
 		
 		//Position difference between circle and rectangle
 		currCircDiffRect = new Point(currCircPos.x - rectPos.x, currCircPos.y - rectPos.y);
@@ -364,15 +364,14 @@ class PhysicsManager
 		return collisionData;
 	}
 	
-	public function HandleAABBCollision(r1 : Rectangle, r2 : Rectangle)
+	public function HandleAABBCollision(r1 : Rectangle, r2 : Rectangle) : Bool
 	{		
 		var dx,dy : Float;
 		
-		dx = Math.abs(r1.x - r2.x) - (r1.width + r2.width) / 2;
-		dy = Math.abs(r1.y - r2.y) - (r1.height + r2.height) / 2;
-		
-		if (dx < 0 && dy < 0)
-			trace("overlap");
+		dx = Math.abs(r1.GetPosition().x - r2.GetPosition().x) - (r1.GetNonRotatedWidth() + r2.GetNonRotatedWidth()) / 2;
+		dy = Math.abs(r1.GetPosition().y - r2.GetPosition().y) - (r1.GetNonRotatedHeight() + r2.GetNonRotatedHeight()) / 2;
+			
+		return (dx < 0 && dy < 0);
 	}
 	
 	public function HandleAABBCircleCollision(r : Rectangle, c : Circle) : Bool
@@ -387,6 +386,28 @@ class PhysicsManager
 	
 	public function Draw(container : Sprite) : Void
 	{
-		quadtree.Draw(container);
+		//quadtree.Draw(container);
+	}
+	
+	/*
+	 * Transform the circle coordinates compared to the rotated rectangle.
+	 * This function is used to perform physics collision between a rotated rectangle and a circle.
+	 * 
+	 * */
+	public static function TransformCoordinates(circle : Circle,rectangle : Rectangle) : Point
+	{
+		var newX, newY, angle, cx,cy,rx,ry : Float;
+		
+		cx = circle.GetPosition().x;
+		cy = circle.GetPosition().y;
+		rx = rectangle.GetPosition().x;
+		ry = rectangle.GetPosition().y;
+		angle = rectangle.GetRotationAngle();
+		
+		newX = Math.cos(MathHelper.ConvertDegToRad(-angle)) * (cx - rx) - Math.sin(MathHelper.ConvertDegToRad(-angle)) * (cy - ry) + rx;
+		newY = Math.sin(MathHelper.ConvertDegToRad(-angle)) * (cx - rx) + Math.cos(MathHelper.ConvertDegToRad(-angle)) * (cy - ry) + ry;
+
+		
+		return new Point(newX,newY);
 	}
 }

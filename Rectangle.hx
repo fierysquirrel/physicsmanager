@@ -210,26 +210,26 @@ class Rectangle extends Body
 	{
 		var norX, norY : Float;
 		
-		norX = -Math.sin(angle * Globals.DEGREE_RAD_CONVERSION);
-		norY = Math.cos(angle * Globals.DEGREE_RAD_CONVERSION);
+		norX = -Math.sin(MathHelper.ConvertDegToRad(angle));
+		norY = Math.cos(MathHelper.ConvertDegToRad(angle));
 		
 		normalUp = new Point( -norX, -norY);
 		normalDown = new Point(norX, norY);
 		
-		norX = -Math.sin((angle + 90) * Globals.DEGREE_RAD_CONVERSION);
-		norY = Math.cos((angle + 90) * Globals.DEGREE_RAD_CONVERSION);
+		norX = -Math.sin(MathHelper.ConvertDegToRad((angle + 90)));
+		norY = Math.cos(MathHelper.ConvertDegToRad((angle + 90)));
 		
 		normalLeft = new Point(norX, norY);
 		normalRight = new Point( -norX, -norY);
 		
-		norX = -Math.sin((angle + 45) * Globals.DEGREE_RAD_CONVERSION);
-		norY = Math.cos((angle + 45) * Globals.DEGREE_RAD_CONVERSION);
+		norX = -Math.sin(MathHelper.ConvertDegToRad((angle + 45)));
+		norY = Math.cos(MathHelper.ConvertDegToRad((angle + 45)));
 		
 		normalDownLeft = new Point(norX, norY);
 		normalUpRight = new Point( -norX, -norY);
 		
-		norX = -Math.sin((angle - 45) * Globals.DEGREE_RAD_CONVERSION);
-		norY = Math.cos((angle - 45) * Globals.DEGREE_RAD_CONVERSION);
+		norX = -Math.sin(MathHelper.ConvertDegToRad((angle - 45)));
+		norY = Math.cos(MathHelper.ConvertDegToRad((angle - 45)));
 		
 		normalDownRight = new Point(norX, norY);
 		normalUpLeft = new Point( -norX, -norY);

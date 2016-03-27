@@ -73,7 +73,7 @@ class Body extends Sprite
 	/*
 	 * Is it debugging?
 	 * */
-	private var isDebugging : Bool = false;
+	private var isDebugging : Bool = true;
 	
 	private var bounding : Sprite;
 	
